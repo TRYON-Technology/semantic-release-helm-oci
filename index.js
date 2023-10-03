@@ -1,16 +1,16 @@
-import verifyChart from './lib/verifyConditions.js';
-import prepareChart from './lib/prepare.js';
-import publishChart from './lib/publish.js';
+const verifyChart = require('./lib/verifyConditions.js');
+const prepareChart = require('./lib/prepare.js');
+const publishChart = require('./lib/publish.js');
 
 let verified = false;
 let prepared = false;
 
-export async function verifyConditions(pluginConfig, context) {
+async function verifyConditions(pluginConfig, context) {
     await verifyChart(pluginConfig, context);
     verified = true;
 }
 
-export async function prepare(pluginConfig, context) {
+async function prepare(pluginConfig, context) {
     if (!verified) {
         await verifyChart(pluginConfig, context);
     }
@@ -19,7 +19,7 @@ export async function prepare(pluginConfig, context) {
     prepared = true;
 }
 
-export async function publish(pluginConfig, context) {
+async function publish(pluginConfig, context) {
     if (!verified) {
         await verifyChart(pluginConfig, context);
     }
@@ -29,3 +29,9 @@ export async function publish(pluginConfig, context) {
 
     await publishChart(pluginConfig, context);
 }
+
+module.exports = {
+    verifyConditions,
+    prepare,
+    publish
+};
